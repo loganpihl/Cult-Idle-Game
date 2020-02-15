@@ -1,0 +1,128 @@
+html, body {
+  font-family: "Courier New", Courier, monospace;
+  height: 100%;
+  margin: 0;
+  width: 100%;
+}
+
+div {
+  font-family: "Courier New", Courier, monospace;
+  padding-right: 30px;
+  width: 100%;
+}
+
+.container {
+  font-family: "Courier New", Courier, monospace;
+  display: flex;
+
+}
+
+.main {
+  font-family: "Courier New", Courier, monospace;
+  padding-left: 30px;
+}
+
+.nav {
+  font-family: "Courier New", Courier, monospace;
+  background-color: #585f7a;
+  width: 160px;
+}
+
+h1 {
+  font-size: 48px;
+}
+
+#mainmenu {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: white;
+  border: 1px solid white;
+  margin: 2px;
+  text-align: center;
+  background-color: #585f7a;
+  float:left;
+}
+
+#temple {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: white;
+  border: 1px solid white;
+  margin: 2px;
+  text-align: center;
+  background-color: #585f7a;
+  float:left;
+}
+
+#temple:active {
+  top:2px;
+}
+
+#templedesc {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: white;
+  border: 1px solid white;
+  margin: 2px;
+  text-align: center;
+  background-color: #585f7a;
+  float:left;
+}
+
+#templedesc:active {
+  top:2px;
+}
+
+#mainmenu button:active {
+  top: 2px;
+}
+
+#building {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: white;
+  border: 1px solid white;
+  margin: 2px;
+  text-align: center;
+  background-color: #585f7a;
+  float:left;
+}
+
+#building button:active {
+  top: 2px;
+}
+
+#desc {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: black;
+  margin: 2px;
+  text-align: center;
+  background-color: white;
+  float:left;
+}
+
+#price {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1rem;
+  color: #5a8091;
+  margin: 2px;
+  text-align: center;
+  background-color: white;
+  float: left;
+}
+
+#prestige {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: #4db391;
+  border: 1px solid black;
+  margin: 2px;
+  text-align: center;
+  float:left;
+}
+
+.nav h1 {
+  font-family: "Courier New", Courier, monospace;
+  padding-left: 20px;
+}

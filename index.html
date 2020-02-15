@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="code.js"></script>
+    <meta charset="UTF-8">
+    <title>Cult Idle Game</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+  </head>
+<body>
+  <header class="container">
+    <div class="row">
+      <h3 class="col-sm-4">cult idle game</h3>
+    </div>
+  </header>
+  <section class="jumbotron" background=#585f7a>
+    <div class="row">
+      <button type="button" onclick="revealInfo(1)" id="temple" class="col-sm-1">temple</button>
+    </div>
+    <div class="row">
+      <script>
+        function revealInfo(x) {
+          if(x == 1 && document.getElementById("templedesc").hasAttribute("hidden")) {
+            document.getElementById("templedesc").removeAttribute("hidden");
+            document.getElementById("templedesc").innerHTML = temple["desc"] + " - " + temple["price"];
+          } else if(x == 1) {
+            document.getElementById("templedesc").setAttribute("hidden");
+            document.getElementById("templedesc").innerHTML = "";
+          }
+        }
+        function purchase(x) {
+          switch(x) {
+            case 1:
+              templeCount++;
+              temple["price"] = 10*templeCoeff;
+              temple["amount"] = templeCount-1;
+              document.getElementById("temple").innerHTML = temple["name"] + " - " + temple["amount"];
+              document.getElementById("templedesc").innerHTML = temple["desc"] + " - " + temple["price"];
+              break;
+            default:
+              break;
+          }
+        }
+      </script>
+      <button type="button" onclick="purchase(1)" id="templedesc" class="col-sm-2" hidden></button>
+    </div>
+  </section>
+</body>
+</html>
