@@ -41,30 +41,30 @@
 // -------------------------------------------------------------------------------
 // ----------------------------------COLLAPSIBLES---------------------------------
 // ----------------------------------DEFINITIONS----------------------------------
-let price_coeff;
-const initPriceCoeff = 1.12;
+let price_coeff = 1.12;
 let prestige = true;
 // insert if statement here when necessary (prestige affecting price coefficients)
-priceCoeff = initPriceCoeff;
 // -----------------------------------BUILDINGS-----------------------------------
-let templeCount = 1;
-let templeCoeff = ((priceCoeff)^(templeCount-1));
-const temple = {
-  name:"temple",
-  price:10*templeCoeff,
-  amount:templeCount-1,
-  desc:"a basic gathering ground for cult members",
-  effect:"generates .5 praise every second"
+let temple = {
+  name: 'temple',
+  price: 10,
+  amount: 0,
+  desc: 'a basic gathering ground for cult members',
+  effect: 'generates .5 praise every second',
+};
+
+function updateBuilding(x) {
+	if (x==1) {
+    	temple.amount++;
+      let tempPrice = Math.round(1000*(Math.pow(price_coeff,temple.amount)));
+    	temple.price = tempPrice/100;
+	};
 };
 /* pseudocode:
 if user clicks on temple buy button AND user has enough resources:
     spend (price) amount of certain resource (ill figure it out, maybe just money?)
 elif user clicks on buy AND user doesn't have enough resources:
     print not enough resources */
-
-buildings = [
-temple
-]
 
 // -------------------------------MAIN MENU FUNCTION------------------------------
 // Figure out how to code between JS/HTML
