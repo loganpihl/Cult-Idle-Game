@@ -122,7 +122,67 @@ h1 {
   float:left;
 }
 
+#cultists {
+  color: #962eff;
+}
+
+#praise {
+  color: #bdbf28;
+}
+
+#changelog {
+  left:25px;
+}
+
 .nav h1 {
   font-family: "Courier New", Courier, monospace;
   padding-left: 20px;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  background-color: inherit;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: white;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  border-bottom: none;
+  color: white;
+  background-color: #585f7a;
+}
+
+/* Style the tab content */
+.tabcontent {
+ display: none;
+ padding: 6px 12px;
+}
+
+.tooltip-wrap {
+  position: relative;
+}
+.tooltip-wrap .tooltip-content {
+  height:50px;
+  width:500px;
+  display: none;
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  background-color: #585f7a;
+  color:white;
+  border: 1px solid black;
+  font-style: italic;
+}
+.tooltip-wrap:hover .tooltip-content {
+  display: block;
 }

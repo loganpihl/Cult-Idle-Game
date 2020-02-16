@@ -11,36 +11,81 @@
   <header class="container">
     <div class="row">
       <h3 class="col-sm-4">cult idle game</h3>
+      <h1 class="col-sm-8"/>
     </div>
   </header>
-  <section class="jumbotron" background=#585f7a>
-    <div class="row">
-      <button type="button" onclick="revealInfo(1)" id="temple" class="col-sm-2">temple</button>
+  <div class="tab">
+    <button class="managetablinks" onclick="openManageTab(event, 'population')">population</button>
+    <button class="managetablinks" onclick="openManageTab(event, 'basicResources')">resources</button>
+  </div>
+  <div id="population" class="managetabcontent" hidden>
+    <div class="tooltip-wrap">
+      <h5 class="col-sm-1" id="cultists" hidden></h5>
+      <div class="tooltip-content">
+        <p id="cultistInfo">each cultist produces 0.5 praise per second, and can do cool things in the future</p>
+      </div>
     </div>
-    <div class="row">
-      <script>
-        function revealInfo(x) {
-          if(x == 1 && document.getElementById("templedesc").hidden == true) {
-            document.getElementById("templedesc").hidden = false;
-            document.getElementById("templedesc").innerHTML = temple.desc + " - " + temple.price;
-          } else if(x == 1 && document.getElementById("templedesc").hidden == false) {
-            document.getElementById("templedesc").hidden = true;
-            document.getElementById("templedesc").innerHTML = "";
+  </div>
+  <div id="basicResources" class="managetabcontent" hidden>
+    <h5 class="col-sm-1" id="wood"></h5>
+    <h5 class="col-sm-1" id="praise"></h5>
+  </div>
+  <section class="jumbotron">
+    <!-- Tab links -->
+    <div class="tab">
+      <button class="gametablinks" onclick="openGameTab(event, 'buildings')">buildings</button>
+      <button class="gametablinks" onclick="openGameTab(event, 'transmutation')" id="transTab" hidden>transmutation</button>
+      <button class="gametablinks" onclick="openGameTab(event, 'settings')">settings</button>
+      <button class="gametablinks" onclick="openGameTab(event, 'changelog')">changelog</button>
+    </div>
+    <!-- Buildings tab -->
+    <div id="buildings" class="gametabcontent" hidden>
+      <div class="row">
+        <button type="button" onclick="revealInfo(1)" id="temple" class="col-sm-1">temple</button>
+      </div>
+      <div class="row">
+        <script>
+          function revealInfo(x) {
+            if(x == 1 && document.getElementById("templedesc").hidden == true) {
+              document.getElementById("templedesc").hidden = false;
+              document.getElementById("templedesc").innerHTML = temple.desc + " - " + temple.price + " wood";
+            } else if(x == 1 && document.getElementById("templedesc").hidden == false) {
+              document.getElementById("templedesc").hidden = true;
+              document.getElementById("templedesc").innerHTML = "";
+            };
           };
-        };
-        function purchase(x) {
-          switch(x) {
-            case 1:
-              updateBuilding(1);
-              document.getElementById("temple").innerHTML = temple.name + " - " + temple.amount;
-              document.getElementById("templedesc").innerHTML = temple.desc + " - " + temple.price;
-              break;
-            default:
-              break;
+          function purchase(x) {
+            switch(x) {
+              case 1:
+                purchaseBuilding(1);
+                document.getElementById("temple").innerHTML = temple.name + " - " + temple.amount;
+                document.getElementById("templedesc").innerHTML = temple.desc + " - " + temple.price + " wood";
+                break;
+              default:
+                break;
+            };
           };
-        };
-      </script>
-      <button type="button" onclick="purchase(1)" id="templedesc" class="col-sm-6" hidden></button>
+        </script>
+        <button type="button" onclick="purchase(1)" id="templedesc" class="col-sm-6" hidden></button>
+      </div>
+    </div>
+    <div id="transmutation" class="gametabcontent" hidden>
+    </div>
+    <div id="settings" class="gametabcontent" hidden>
+      <div class="row">
+        <h5 class="col-sm-4">i have no settings for now</h5>
+      </div>
+    </div>
+    <div id="changelog" class="gametabcontent" hidden>
+      <div class="row">
+        <h4 class="col-sm-6" id="changelog">
+          version 0.1:
+          <ul>
+            <li>made the website framework, so there's tabs and resources</li>
+            <li>coded basic incremental stuff with cultists and praise</li>
+            <li>will work on transmutation later</li>
+        </h4>
+      </div>
     </div>
   </section>
 </body>
