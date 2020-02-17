@@ -77,6 +77,40 @@ h1 {
   top:2px;
 }
 
+#furnace {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: white;
+  border: 1px solid white;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+  background-color: #585f7a;
+  float:left;
+  overflow:hidden;
+}
+
+#furnace:active {
+  top:2px;
+}
+
+#furnacedesc {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
+  color: white;
+  border: 1px solid white;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+  background-color: #585f7a;
+  float:left;
+  overflow:hidden;
+}
+
+#furnacedesc:active {
+  top:2px;
+}
+
 #mainmenu button:active {
   top: 2px;
 }
@@ -164,11 +198,14 @@ h1 {
   text-align: center;
 }
 
-#p2wInfo {
-  font-size: 1.20rem;
-  background-color: #e8c974;
-  border: 1px solid #7d5e09;
-  color: white;
+#p2sCreate {
+  font-size: 1.25rem;
+  background-color: #b5b5b5;
+  color: black;
+  border: 1px solid #707070;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
 }
 
 .nav h1 {

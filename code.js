@@ -43,6 +43,8 @@
 let price_coeff = 1.12;
 let prestige = true;
 let transUnlock = false;
+let stoneUnlock = false;
+let furnaceUnlock = false;
 // insert if statement here when necessary (prestige affecting price coefficients)
 
 //------------------------------------RESOURCES-----------------------------------
@@ -50,9 +52,10 @@ let transUnlock = false;
 let cultists = 0;
 let cultistCap = 0;
 //basic materials
+let stone = 0;
 let wood = 10;
-let praise = 10;
-let totalPraise = 10;
+let praise = 0;
+let totalPraise = 0;
 
 // -----------------------------------BUILDINGS-----------------------------------
 let temple = {
@@ -61,6 +64,14 @@ let temple = {
   amount: 0,
   desc: 'a basic gathering ground for cult members',
   effect: 'gives a cultist slot per rank, allowing for 0.5 praise per second',
+};
+
+let furnace = {
+  name: 'furnace',
+  price: 10,
+  amount: 0,
+  desc: 'something to keep your cultists warm',
+  effect: 'allows transmuting wood into charcoal<br>every level increases yield by a diminishing amount',
 };
 
 function updateBuilding(x) {
@@ -76,7 +87,13 @@ function updateBuilding(x) {
         document.getElementById("cultists").innerHTML = "cultists: " + cultists + "/" + cultistCap;
       };
       // update price
-      temple.price = (Math.round(1000*(Math.pow(price_coeff,temple.amount*temple.amount))))/100;
+      temple.price = (Math.round(1000*(Math.pow(price_coeff,temple.amount*2)*temple.amount)))/100;
+      break;
+    case "furnace":
+      // increase amount and cultist cap, as well as update cultist cap on html
+      furnace.amount++;
+      // update price
+      furnace.price = (Math.round(1000*(Math.pow(price_coeff,furnace.amount))))/100;
       break;
     default:
       break;
@@ -88,6 +105,10 @@ function purchaseBuilding(x) {
   if (x=="temple" && wood>=temple.price) {
     // update resource amount and run the next function
     wood = wood-temple.price;
+    updateBuilding(x);
+  } else if (x=="furnace" && stone>=furnace.price) {
+    // update resource amount and run the next function
+    stone = stone-furnace.price;
     updateBuilding(x);
   };
 };
@@ -111,6 +132,22 @@ function transmutation(x,y,z) {
           break;
         case "woodMAX":
           wood=wood+praise;
+          praise=praise-praise;
+          break;
+        case "stonex1":
+          stone++;
+          praise=praise-3;
+          break;
+        case "stonex10":
+          stone=stone+10;
+          praise=praise-30;
+          break;
+        case "stonex100":
+          stone=stone+100;
+          praise=praise-300;
+          break;
+        case "stoneMAX":
+          stone=stone+(praise/3);
           praise=praise-praise;
           break;
         default:
@@ -197,6 +234,12 @@ window.setInterval(function() {
       document.getElementById("transTab").hidden = false;
     };
   };
+  if (furnaceUnlock==false) {
+    if (stone>=10) {
+      furnaceUnlock=true;
+      document.getElementById("furnace").hidden = false;
+    };
+  };
   // are cultists at max capacity? if not, 1/20 chance per .1 second
   if (cultists<cultistCap) {
     if (Math.random()<=.05) {
@@ -208,8 +251,15 @@ window.setInterval(function() {
   praise = (Math.round(100*(praise+(cultists*.5)/10)))/100;
   totalPraise = (Math.round(100*(totalPraise+(cultists*.5)/10)))/100;
   wood = Math.round(wood*100)/100;
+  stone = Math.round(stone*100)/100;
+  if (stoneUnlock == false && stone>=1) {
+    stoneUnlock = true;
+    document.getElementById("stone").hidden = false;
+    document.getElementById("stone").innerHTML = "stone: " + stone;
+  } else if (stoneUnlock == true) {
+    document.getElementById("stone").innerHTML = "stone: " + stone;
+  };
   document.getElementById("wood").innerHTML = "wood: " + wood;
   document.getElementById("praise").innerHTML = "praise: " + praise;
   document.getElementById("praiseTrans").innerHTML = "available praise: " + praise;
-  document.getElementById("totalPraise").innerHTML = "total praise: " + totalPraise;
 },100);

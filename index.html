@@ -31,8 +31,9 @@
     </div>
   </div>
   <div id="basicResources" class="managetabcontent" hidden>
-    <h5 class="col-sm-1" id="wood"></h5>
-    <h5 class="col-sm-1" id="praise"></h5>
+    <h5 class="col-sm-2" id="praise"></h5>
+    <h5 class="col-sm-2" id="wood"></h5>
+    <h5 class="col-sm-2" id="stone" hidden></h5>
   </div>
   <!-- main game section -->
   <section class="jumbotron">
@@ -45,56 +46,82 @@
     </div>
     <!-- buildings tab -->
     <div id="buildings" class="gametabcontent" hidden>
+      <script>
+        function revealInfo(x) {
+          // is the argument a certain number + is the info already hidden?
+          if(x == "temple" && document.getElementById("templedesc").hidden == true) {
+            // reveal the info
+            document.getElementById("templedesc").hidden = false;
+            document.getElementById("templedesc").innerHTML = temple.desc + "<br>" + temple.effect + "<br>costs " + temple.price + " wood";
+            // is the info not hidden?
+          } else if(x == "temple" && document.getElementById("templedesc").hidden == false) {
+            // hide the info
+            document.getElementById("templedesc").hidden = true;
+            document.getElementById("templedesc").innerHTML = "";
+          } else if(x == "furnace" && document.getElementById("furnacedesc").hidden == true) {
+            // reveal the info
+            document.getElementById("furnacedesc").hidden = false;
+            document.getElementById("furnacedesc").innerHTML = furnace.desc + "<br>" + furnace.effect + "<br>costs " + furnace.price + " stone";
+            // is the info not hidden?
+          } else if(x == "furnace" && document.getElementById("furnacedesc").hidden == false) {
+            // hide the info
+            document.getElementById("furnacedesc").hidden = true;
+            document.getElementById("furnacedesc").innerHTML = "";
+          }
+        };
+        function purchase(x) {
+          // which building are you buying?
+          switch(x) {
+            case "temple":
+              // see this function in code.js
+              purchaseBuilding("temple");
+              // update text
+              document.getElementById("temple").innerHTML = temple.name + " - " + "rank " + temple.amount;
+              document.getElementById("templedesc").innerHTML = temple.desc + "<br>" + temple.effect + "<br>costs " + temple.price + " wood";
+              break;
+            case "furnace":
+              // see this function in code.js
+              purchaseBuilding("furnace");
+              // update text
+              document.getElementById("furnace").innerHTML = furnace.name + " - " + "rank " + furnace.amount;
+              document.getElementById("furnacedesc").innerHTML = furnace.desc + "<br>" + furnace.effect + "<br>costs " + furnace.price + " stone";
+              break;
+            default:
+              break;
+          };
+        };
+      </script>
       <div class="row">
         <button type="button" onclick="revealInfo('temple')" id="temple">temple</button>
       </div>
       <div class="row">
-        <script>
-          function revealInfo(x) {
-            // is the argument a certain number + is the info already hidden?
-            if(x == "temple" && document.getElementById("templedesc").hidden == true) {
-              // reveal the info
-              document.getElementById("templedesc").hidden = false;
-              document.getElementById("templedesc").innerHTML = temple.desc + "<br>" + temple.effect + "<br>" + temple.price + " wood";
-              // is the info not hidden?
-            } else if(x == "temple" && document.getElementById("templedesc").hidden == false) {
-              // hide the info
-              document.getElementById("templedesc").hidden = true;
-              document.getElementById("templedesc").innerHTML = "";
-            };
-          };
-          function purchase(x) {
-            // which building are you buying?
-            switch(x) {
-              case 1:
-                // see this function in code.js
-                purchaseBuilding("temple");
-                // update text
-                document.getElementById("temple").innerHTML = temple.name + " - " + "rank " + temple.amount;
-                document.getElementById("templedesc").innerHTML = temple.desc + "<br>" + temple.effect + "<br>costs " + temple.price + " wood";
-                break;
-              default:
-                break;
-            };
-          };
-        </script>
-        <button type="button" onclick="purchase(1)" id="templedesc" hidden></button>
+        <button type="button" onclick="purchase('temple')" id="templedesc" hidden></button>
+      </div>
+      <div class="row">
+        <button type="button" onclick="revealInfo('furnace')" id="furnace" hidden>furnace</button>
+      </div>
+      <div class="row">
+        <button type="button" onclick="purchase('furnace')" id="furnacedesc" hidden></button>
       </div>
     </div>
     <!-- transmutation tab -->
     <div id="transmutation" class="gametabcontent" hidden>
-      <div class="row">
-        <h1 class="col-sm-3"/>
-        <h3 class="col-sm-3" id="totalPraise"></h3>
-      </div>
       <div class="tab">
         <button class="transtablinks" onclick="openTransTab(event, 'praiseCreate')" id="praiseTrans"></button>
       </div>
       <div id="praiseCreate" class="transtabcontent" hidden>
-        <button onclick="transmutation('praise','woodx1',1)" id="p2wCreate">wood<br>1:1 transmutation, .5sec manifestation time</h5>
-        <button onclick="transmutation('praise','woodx10',10)" id="p2wCreate">wood<br>x10</h5>
-        <button onclick="transmutation('praise','woodx100',100)" id="p2wCreate">wood<br>x100</h5>
-        <button onclick="transmutation('praise','woodMAX',praise)" id="p2wCreate">wood<br>MAX</h5>
+        <div class="row">
+          <button onclick="transmutation('praise','woodx1',1)" id="p2wCreate" class="col-sm-3">wood<br>1:1 transmutation</h5>
+          <button onclick="transmutation('praise','woodx10',10)" id="p2wCreate" class="col-sm-1">wood x10</h5>
+          <button onclick="transmutation('praise','woodx100',100)" id="p2wCreate" class="col-sm-1">wood x100</h5>
+          <button onclick="transmutation('praise','woodMAX',praise)" id="p2wCreate" class="col-sm-1">wood MAX</h5>
+        </div>
+        <div class="row">
+          <button onclick="transmutation('praise','stonex1',3)" id="p2sCreate" class="col-sm-3">stone<br>3:1 transmutation</h5>
+          <button onclick="transmutation('praise','stonex10',30)" id="p2sCreate" class="col-sm-1">stone x10</h5>
+          <button onclick="transmutation('praise','stonex100',300)" id="p2sCreate" class="col-sm-1">stone x100</h5>
+          <button onclick="transmutation('praise','stoneMAX',praise)" id="p2sCreate" class="col-sm-1">stone MAX</h5>
+        </div>
       </div>
     </div>
     <!-- settings tab -->
