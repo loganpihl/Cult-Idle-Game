@@ -2,7 +2,7 @@
 // Created on 11 Feb 2020
 //I'm making an incremental game with a tech tree. That's all I got so far.
 
-// ------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
 // Journal:
 // 11 Feb: Brainstorming
 /* 13 Feb: General idea obtained, time to code basic stuff, switching to JS/HTML
@@ -39,54 +39,88 @@
    on different parts of the continent */
 // Cult Simulator??!
 // -------------------------------------------------------------------------------
-// ----------------------------------COLLAPSIBLES---------------------------------
 // ----------------------------------DEFINITIONS----------------------------------
 let price_coeff = 1.12;
 let prestige = true;
 let transUnlock = false;
 // insert if statement here when necessary (prestige affecting price coefficients)
+
 //------------------------------------RESOURCES-----------------------------------
 //population
 let cultists = 0;
 let cultistCap = 0;
 //basic materials
 let wood = 10;
-let praise = 0;
+let praise = 10;
+let totalPraise = 10;
+
 // -----------------------------------BUILDINGS-----------------------------------
 let temple = {
   name: 'temple',
   price: 10,
   amount: 0,
   desc: 'a basic gathering ground for cult members',
-  effect: 'gives a cultist slot per level, allowing for 0.5 praise per second',
+  effect: 'gives a cultist slot per rank, allowing for 0.5 praise per second',
 };
+
 function updateBuilding(x) {
-	if (x==1) {
-    	temple.amount++;
+  // which building is it?
+  switch(x) {
+    // temple
+    case "temple":
+      // increase amount and cultist cap, as well as update cultist cap on html
+      temple.amount++;
       cultistCap++;
       if (temple.amount>=1) {
         document.getElementById("cultists").hidden = false;
         document.getElementById("cultists").innerHTML = "cultists: " + cultists + "/" + cultistCap;
       };
-    	temple.price = (Math.round(1000*(Math.pow(price_coeff,temple.amount*temple.amount))))/100;
-	};
+      // update price
+      temple.price = (Math.round(1000*(Math.pow(price_coeff,temple.amount*temple.amount))))/100;
+      break;
+    default:
+      break;
+  };
 };
 
 function purchaseBuilding(x) {
-  if (x==1 && wood>=temple.price) {
+  // which building? enough resources?
+  if (x=="temple" && wood>=temple.price) {
+    // update resource amount and run the next function
     wood = wood-temple.price;
     updateBuilding(x);
   };
 };
-/* pseudocode:
-if user clicks on temple buy button AND user has enough resources:
-    spend (price) amount of certain resource (ill figure it out, maybe just money?)
-elif user clicks on buy AND user doesn't have enough resources:
-    print not enough resources */
 
-// -------------------------------MAIN MENU FUNCTION------------------------------
-// Figure out how to code between JS/HTML
-// ----------------------------------TAB FUNCTIONS---------------------------------
+// --------------------------TRANSMUTATION/MANIFESTATION--------------------------
+function transmutation(x,y,z) {
+  if (x=="praise") {
+    if(praise>=z) {
+      switch(y) {
+        case "woodx1":
+          wood++;
+          praise--;
+          break;
+        case "woodx10":
+          wood=wood+10;
+          praise=praise-10;
+          break;
+        case "woodx100":
+          wood=wood+100;
+          praise=praise-100;
+          break;
+        case "woodMAX":
+          wood=wood+praise;
+          praise=praise-praise;
+          break;
+        default:
+          break;
+      };
+    };
+  };
+};
+
+// ----------------------------------TAB FUNCTIONS--------------------------------
 function openManageTab(evt, tabName) {
   // Declare all variables
   var i, tabcontent, tablinks;
@@ -99,6 +133,28 @@ function openManageTab(evt, tabName) {
 
   // Get all elements with class="tablinks" and remove the class "active"
   tablinks = document.getElementsByClassName("managetablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+  //ty w3schools
+}
+
+function openTransTab(evt, tabName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("transtabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("transtablinks");
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
@@ -128,26 +184,32 @@ function openGameTab(evt, tabName) {
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(tabName).style.display = "block";
   evt.currentTarget.className += " active";
-  //ty w3schools
+
 }
+  //ty w3schools
 
 // ---------------------------------TICK FUNCTIONS--------------------------------
 window.setInterval(function() {
+  // is transmutation unlocked? if not, check for >10 praise and unlock if so
   if (transUnlock==false) {
     if (praise>=10) {
       transUnlock=true;
       document.getElementById("transTab").hidden = false;
     };
   };
+  // are cultists at max capacity? if not, 1/20 chance per .1 second
   if (cultists<cultistCap) {
     if (Math.random()<=.05) {
       cultists++;
       document.getElementById("cultists").innerHTML = "cultists: " + cultists + "/" + cultistCap;
     };
   };
-  document.getElementById("wood").innerHTML = "wood: " + wood;
-  tempPraise = praise+(cultists)
+  // update incrementing resources
   praise = (Math.round(100*(praise+(cultists*.5)/10)))/100;
+  totalPraise = (Math.round(100*(totalPraise+(cultists*.5)/10)))/100;
+  wood = Math.round(wood*100)/100;
+  document.getElementById("wood").innerHTML = "wood: " + wood;
   document.getElementById("praise").innerHTML = "praise: " + praise;
-  console.log(wood + " wood, " + praise + " praise");
+  document.getElementById("praiseTrans").innerHTML = "available praise: " + praise;
+  document.getElementById("totalPraise").innerHTML = "total praise: " + totalPraise;
 },100);

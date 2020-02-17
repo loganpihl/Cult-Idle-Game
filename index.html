@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- setup -->
     <script src="code.js"></script>
     <meta charset="UTF-8">
     <title>Cult Idle Game</title>
@@ -8,21 +9,24 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
   </head>
 <body>
+  <!-- header -->
   <header class="container">
     <div class="row">
       <h3 class="col-sm-4">cult idle game</h3>
       <h1 class="col-sm-8"/>
     </div>
   </header>
+  <!-- management tab links -->
   <div class="tab">
     <button class="managetablinks" onclick="openManageTab(event, 'population')">population</button>
     <button class="managetablinks" onclick="openManageTab(event, 'basicResources')">resources</button>
   </div>
+  <!-- management tab contents -->
   <div id="population" class="managetabcontent" hidden>
     <div class="tooltip-wrap">
       <h5 class="col-sm-1" id="cultists" hidden></h5>
       <div class="tooltip-content">
-        <p id="cultistInfo">each cultist produces 0.5 praise per second, and can do cool things in the future</p>
+          <p class="col-sm-6" id="cultistInfo">each cultist produces 0.5 praise per second, and can do cool things in the future</p>
       </div>
     </div>
   </div>
@@ -30,52 +34,76 @@
     <h5 class="col-sm-1" id="wood"></h5>
     <h5 class="col-sm-1" id="praise"></h5>
   </div>
+  <!-- main game section -->
   <section class="jumbotron">
-    <!-- Tab links -->
+    <!-- game tab links -->
     <div class="tab">
       <button class="gametablinks" onclick="openGameTab(event, 'buildings')">buildings</button>
       <button class="gametablinks" onclick="openGameTab(event, 'transmutation')" id="transTab" hidden>transmutation</button>
       <button class="gametablinks" onclick="openGameTab(event, 'settings')">settings</button>
       <button class="gametablinks" onclick="openGameTab(event, 'changelog')">changelog</button>
     </div>
-    <!-- Buildings tab -->
+    <!-- buildings tab -->
     <div id="buildings" class="gametabcontent" hidden>
       <div class="row">
-        <button type="button" onclick="revealInfo(1)" id="temple" class="col-sm-1">temple</button>
+        <button type="button" onclick="revealInfo('temple')" id="temple">temple</button>
       </div>
       <div class="row">
         <script>
           function revealInfo(x) {
-            if(x == 1 && document.getElementById("templedesc").hidden == true) {
+            // is the argument a certain number + is the info already hidden?
+            if(x == "temple" && document.getElementById("templedesc").hidden == true) {
+              // reveal the info
               document.getElementById("templedesc").hidden = false;
-              document.getElementById("templedesc").innerHTML = temple.desc + " - " + temple.price + " wood";
-            } else if(x == 1 && document.getElementById("templedesc").hidden == false) {
+              document.getElementById("templedesc").innerHTML = temple.desc + "<br>" + temple.effect + "<br>" + temple.price + " wood";
+              // is the info not hidden?
+            } else if(x == "temple" && document.getElementById("templedesc").hidden == false) {
+              // hide the info
               document.getElementById("templedesc").hidden = true;
               document.getElementById("templedesc").innerHTML = "";
             };
           };
           function purchase(x) {
+            // which building are you buying?
             switch(x) {
               case 1:
-                purchaseBuilding(1);
-                document.getElementById("temple").innerHTML = temple.name + " - " + temple.amount;
-                document.getElementById("templedesc").innerHTML = temple.desc + " - " + temple.price + " wood";
+                // see this function in code.js
+                purchaseBuilding("temple");
+                // update text
+                document.getElementById("temple").innerHTML = temple.name + " - " + "rank " + temple.amount;
+                document.getElementById("templedesc").innerHTML = temple.desc + "<br>" + temple.effect + "<br>costs " + temple.price + " wood";
                 break;
               default:
                 break;
             };
           };
         </script>
-        <button type="button" onclick="purchase(1)" id="templedesc" class="col-sm-6" hidden></button>
+        <button type="button" onclick="purchase(1)" id="templedesc" hidden></button>
       </div>
     </div>
+    <!-- transmutation tab -->
     <div id="transmutation" class="gametabcontent" hidden>
+      <div class="row">
+        <h1 class="col-sm-3"/>
+        <h3 class="col-sm-3" id="totalPraise"></h3>
+      </div>
+      <div class="tab">
+        <button class="transtablinks" onclick="openTransTab(event, 'praiseCreate')" id="praiseTrans"></button>
+      </div>
+      <div id="praiseCreate" class="transtabcontent" hidden>
+        <button onclick="transmutation('praise','woodx1',1)" id="p2wCreate">wood<br>1:1 transmutation, .5sec manifestation time</h5>
+        <button onclick="transmutation('praise','woodx10',10)" id="p2wCreate">wood<br>x10</h5>
+        <button onclick="transmutation('praise','woodx100',100)" id="p2wCreate">wood<br>x100</h5>
+        <button onclick="transmutation('praise','woodMAX',praise)" id="p2wCreate">wood<br>MAX</h5>
+      </div>
     </div>
+    <!-- settings tab -->
     <div id="settings" class="gametabcontent" hidden>
       <div class="row">
         <h5 class="col-sm-4">i have no settings for now</h5>
       </div>
     </div>
+    <!-- changelog tab -->
     <div id="changelog" class="gametabcontent" hidden>
       <div class="row">
         <h4 class="col-sm-6" id="changelog">
