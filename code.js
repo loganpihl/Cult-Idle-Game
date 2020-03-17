@@ -2,49 +2,20 @@
 // Created on 11 Feb 2020
 //I'm making an incremental game with a tech tree. That's all I got so far.
 
-// -------------------------------------------------------------------------------
-// Journal:
-// 11 Feb: Brainstorming
-/* 13 Feb: General idea obtained, time to code basic stuff, switching to JS/HTML
-- switched to JS/HTML; page set up very simplified; need to code, ya know, everything
-- kinda working while learning HTML/CSS/JS interaction, so whoops
-/shrug
-*/
-/* 14 Feb: Re-did the site design, looks better for sure
-- coded the price and amount displaying, programmed buttons
-*/
-// To-do:
-/*
-- fix the price coefficient calculation, have it display properly
-- allow the description to be minimized after being displayed
-- make site look pretty
-- code resource gathering, purchasing buildings
-- code different tabs of the game
-- continue learning how tf to use JS/CSS/HTML together
-*/
-
-// Ideas:
-// Create a main tab
-// Unveiling resources, buildings, sciences, upgrades over time
-// Brutal difficulty, options to progress
-// Lineage tree, with different routes to succeed in the game with
-    // One that focuses on prosperity and trade
-    // One that focuses on scientific advancement and resource gathering
-    // One that focuses on agriculture
-/* Each lineage will have unique resources and buildings, some being saved
-       over resets, so in order to get further in one lineage you may need
-       resources from another. */
-// Keep numbers small for as long as possible
-/* Land, expansion, war mechanics to obtain particular resources only located
-   on different parts of the continent */
-// Cult Simulator??!
-// -------------------------------------------------------------------------------
 // ----------------------------------DEFINITIONS----------------------------------
+const e = 2.7182818285;
 let price_coeff = 1.12;
 let prestige = true;
+let cultistsUnlock=false;
 let transUnlock = false;
 let stoneUnlock = false;
+let oreUnlock = false;
 let furnaceUnlock = false;
+let charcoalUnlock = false;
+let smelteryUnlock = false;
+let ironUnlock = false;
+let copperUnlock = false;
+let tinUnlock = false;
 // insert if statement here when necessary (prestige affecting price coefficients)
 
 //------------------------------------RESOURCES-----------------------------------
@@ -52,9 +23,23 @@ let furnaceUnlock = false;
 let cultists = 0;
 let cultistCap = 0;
 //basic materials
-let stone = 0;
-let wood = 10;
 let praise = 0;
+let wood = 10;
+let woodCap = 50;
+let stone = 0;
+let stoneCap = 50;
+let ore = 0;
+let oreCap = 25;
+let charcoal = 0;
+let charcoalCap = 50;
+let iron = 0;
+let ironCap = 10;
+let copper = 0;
+let copperCap = 10;
+let tin = 0;
+let tinCap = 10;
+let furnaceCharge = 0;
+
 let totalPraise = 0;
 
 // -----------------------------------BUILDINGS-----------------------------------
@@ -71,7 +56,8 @@ let furnace = {
   price: 10,
   amount: 0,
   desc: 'something to keep your cultists warm',
-  effect: 'allows transmuting wood into charcoal<br>every level increases yield by a diminishing amount',
+  effect: 'allows for further transmuting, thanks to the power of fire<br>allows for smelting of certain materials<br>every level increases yield of smelted items by a diminishing amount',
+  yield: 0,
 };
 
 function updateBuilding(x) {
@@ -82,18 +68,24 @@ function updateBuilding(x) {
       // increase amount and cultist cap, as well as update cultist cap on html
       temple.amount++;
       cultistCap++;
-      if (temple.amount>=1) {
-        document.getElementById("cultists").hidden = false;
+      if (temple.amount>=1 && cultistsUnlock==false) {
+        cultistsUnlock==true;
+        document.getElementById("populationTab").hidden = false;
+        document.getElementById("cultists").innerHTML = "cultists: " + cultists + "/" + cultistCap;
+      } else if (cultistsUnlock==true) {
         document.getElementById("cultists").innerHTML = "cultists: " + cultists + "/" + cultistCap;
       };
       // update price
-      temple.price = (Math.round(1000*(Math.pow(price_coeff,temple.amount*2)*temple.amount)))/100;
+      temple.price = (Math.round(1000*(Math.pow(price_coeff,temple.amount*(2*price_coeff))*temple.amount)))/100;
       break;
     case "furnace":
       // increase amount and cultist cap, as well as update cultist cap on html
       furnace.amount++;
       // update price
-      furnace.price = (Math.round(1000*(Math.pow(price_coeff,furnace.amount))))/100;
+      furnace.price = (Math.round(1000*(Math.pow(price_coeff,furnace.amount*(3*price_coeff))*furnace.amount)))/100;
+      if (furnace.amount>1) {
+        furnace.yield = furnace.yield+(1-(Math.pow(e,(-.5/furnace.amount))));
+      };
       break;
     default:
       break;
@@ -113,46 +105,153 @@ function purchaseBuilding(x) {
   };
 };
 
-// --------------------------TRANSMUTATION/MANIFESTATION--------------------------
+// --------------------------TRANSMUTATION/FURNACE--------------------------
 function transmutation(x,y,z) {
+  let oreGained = 0;
   if (x=="praise") {
     if(praise>=z) {
       switch(y) {
-        case "woodx1":
-          wood++;
-          praise--;
+        // praise to wood
+        case "p2wx1":
+          if(wood+1>=woodCap) {
+            praise=praise-(woodCap-wood);
+            wood=woodCap;
+            amt=z;
+          } else {
+            wood++;
+            praise--;
+            amt++;
+          };
           break;
-        case "woodx10":
-          wood=wood+10;
-          praise=praise-10;
+        case "p2wx10":
+          if(wood+10>=woodCap) {
+            praise=praise-(woodCap-wood);
+            wood=woodCap;
+          } else {
+            wood=wood+10;
+            praise=praise-10;
+          };
           break;
-        case "woodx100":
-          wood=wood+100;
-          praise=praise-100;
+        case "p2wx100":
+          if(wood+100>=woodCap) {
+            praise=praise-(woodCap-wood);
+            wood=woodCap;
+          } else {
+            wood=wood+100;
+            praise=praise-100;
+          };
           break;
-        case "woodMAX":
-          wood=wood+praise;
-          praise=praise-praise;
+        case "p2wMAX":
+          if(wood+praise>=woodCap) {
+            praise=praise-(woodCap-wood);
+            wood=woodCap;
+          } else {
+            wood=wood+praise;
+            praise=0;
+          };
           break;
-        case "stonex1":
-          stone++;
-          praise=praise-3;
+        // praise to stone
+        case "p2sx1":
+        case "p2sx10":
+        case "p2sx100":
+          for (i=0; i<(z/3); i++) {
+            if (Math.random()<=.2) {
+              if ((ore+1)>=oreCap && stone+(z/3)<stoneCap) {
+                oreGained=oreGained+(oreCap-ore);
+                ore=oreCap;
+              } else if (stone+(z/3)<stoneCap) {
+                ore++;
+                oreGained++;
+              };
+            };
+          };
+          if(stone+(z/3)>=stoneCap) {
+            praise=praise-(3*(stoneCap-stone));
+            stone=stoneCap-oreGained;
+          } else {
+            stone=(stone+(z/3))-oreGained;
+            praise=praise-z;
+          };
           break;
-        case "stonex10":
-          stone=stone+10;
-          praise=praise-30;
+      case "p2sMAX":
+        for (i=0; i<(z/3); i=i+.01) {
+          if (Math.random()<=.2) {
+            if (ore+.01>=oreCap && stone+.01<stoneCap) {
+              oreGained=oreGained+(oreCap-ore);
+              ore=oreCap;
+            } else if (stone+.01<stoneCap) {
+              ore=ore+.01;
+              oreGained=oreGained+.01;
+            };
+          };
+        };
+        if(stone+(z/3)>=stoneCap) {
+          praise=praise-(3*(stoneCap-stone));
+          stone=stoneCap;
+        } else {
+          stone=(stone+(z/3))-oreGained;
+          praise=0;
+        };
+        break;
+      default:
+        break;
+      };
+    };
+  } else if (x=="wood") {
+    if (wood>=z) {
+      switch(y) {
+        // wood to charcoal
+        case "w2cx1":
+          if (charcoal+(1+furnace.yield)>=charcoalCap) {
+            wood=wood-(charcoalCap-charcoal);
+            charcoal=charcoalCap;
+          } else {
+            charcoal=charcoal+1+furnace.yield;
+            wood--;
+          }
           break;
-        case "stonex100":
-          stone=stone+100;
-          praise=praise-300;
+        case "w2cx10":
+          if (charcoal+10+(10*furnace.yield)>=charcoalCap) {
+            wood=wood-(charcoalCap-charcoal);
+            charcoal=charcoalCap;
+          } else {
+            charcoal=charcoal+10+(10*furnace.yield);
+            wood=wood-10;
+          }
           break;
-        case "stoneMAX":
-          stone=stone+(praise/3);
-          praise=praise-praise;
+        case "w2cx100":
+          if (charcoal+100+(100*furnace.yield)>=charcoalCap) {
+            wood=wood-(charcoalCap-charcoal);
+            charcoal=charcoalCap;
+          } else {
+            charcoal=charcoal+100+(100*furnace.yield);
+            wood=wood-100;
+          }
+          break;
+        case "w2cMAX":
+          if (charcoal+wood+(wood*furnace.yield)>=charcoalCap) {
+            wood=wood-(charcoalCap-charcoal);
+            charcoal=charcoalCap;
+          } else {
+            charcoal=charcoal+wood+(wood*furnace.yield);
+            wood=0;
+          }
           break;
         default:
           break;
       };
+    };
+  };
+};
+
+function lightFurnace(x) {
+  if (charcoal>=x) {
+    if (charcoal-x<0) {
+      furnaceCharge=furnaceCharge+charcoal;
+      charcoal=0;
+    } else {
+      furnaceCharge=furnaceCharge+x;
+      charcoal=charcoal-x;
     };
   };
 };
@@ -252,14 +351,55 @@ window.setInterval(function() {
   totalPraise = (Math.round(100*(totalPraise+(cultists*.5)/10)))/100;
   wood = Math.round(wood*100)/100;
   stone = Math.round(stone*100)/100;
-  if (stoneUnlock == false && stone>=1) {
+  charcoal = Math.round(charcoal*100)/100;
+  ore = Math.round(ore*100)/100;
+  if (wood>=woodCap) {
+    wood=woodCap;
+  };
+  if (stone>=stoneCap) {
+    stone=stoneCap;
+  };
+  if (charcoal>=charcoalCap) {
+    charcoal=charcoalCap;
+  };
+  if (ore>=oreCap) {
+    ore=oreCap;
+  };
+  document.getElementById("praise").innerHTML = "praise: " + praise;
+  document.getElementById("wood").innerHTML = "wood: " + wood + "/" + woodCap;
+  if (stoneUnlock == false && stone>0) {
     stoneUnlock = true;
     document.getElementById("stone").hidden = false;
-    document.getElementById("stone").innerHTML = "stone: " + stone;
+    document.getElementById("stone").innerHTML = "stone: " + stone + "/" + stoneCap;
   } else if (stoneUnlock == true) {
-    document.getElementById("stone").innerHTML = "stone: " + stone;
+    document.getElementById("stone").innerHTML = "stone: " + stone + "/" + stoneCap;
   };
-  document.getElementById("wood").innerHTML = "wood: " + wood;
-  document.getElementById("praise").innerHTML = "praise: " + praise;
-  document.getElementById("praiseTrans").innerHTML = "available praise: " + praise;
+  if (oreUnlock == false && ore>0) {
+    oreUnlock = true;
+    document.getElementById("ore").hidden = false;
+    document.getElementById("ore").innerHTML = "ore: " + ore + "/" + oreCap;
+  } else if (oreUnlock == true) {
+    document.getElementById("ore").innerHTML = "ore: " + ore + "/" + oreCap;
+  };
+  if (smelteryUnlock == false && furnace.amount > 0) {
+    smelteryUnlock = true;
+    document.getElementById("woodTrans").hidden = false;
+    document.getElementById("smelteryTrans").hidden = false;
+  };
+  if (charcoalUnlock == false && charcoal>0) {
+    charcoalUnlock = true;
+    document.getElementById("charcoal").hidden = false;
+    document.getElementById("charcoal").innerHTML = "charcoal: " + charcoal + "/" + charcoalCap;
+  } else if (charcoalUnlock == true) {
+    document.getElementById("charcoal").innerHTML = "charcoal: " + charcoal + "/" + charcoalCap;
+  };
+  document.getElementById("praiseTrans").innerHTML = "available praise:<br>" + praise;
+  document.getElementById("displayTotalPraise").innerHTML = "total praise: " + totalPraise;
+  document.getElementById("woodTrans").innerHTML = "available wood:<br>" + wood;
+  if (furnaceCharge == 1) {
+    document.getElementById("smelteryTrans").innerHTML = "smeltery<br>" + furnaceCharge + " charge";
+  } else {
+    document.getElementById("smelteryTrans").innerHTML = "smeltery<br>" + furnaceCharge + " charges";
+  };
+  document.getElementById("w2cCreate-main").innerHTML = "charcoal<br>1:" + (Math.round((100*(1+furnace.yield)))/100) + " transmutation";
 },100);

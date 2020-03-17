@@ -63,12 +63,10 @@ h1 {
 #templedesc {
   font-family: "Courier New", Courier, monospace;
   font-size: 1.5rem;
-  color: white;
-  border: 1px solid white;
+  color: black;
   margin-left: 20px;
   margin-top: 2px;
   text-align: center;
-  background-color: #585f7a;
   float:left;
   overflow:hidden;
 }
@@ -97,12 +95,10 @@ h1 {
 #furnacedesc {
   font-family: "Courier New", Courier, monospace;
   font-size: 1.5rem;
-  color: white;
-  border: 1px solid white;
+  color: black;
   margin-left: 20px;
   margin-top: 2px;
   text-align: center;
-  background-color: #585f7a;
   float:left;
   overflow:hidden;
 }
@@ -180,9 +176,35 @@ h1 {
 
 #praiseTrans {
   font-size: 1.25rem;
+  height:100%;
+  width:100%;
   background-color: #f9fc35;
   color: black;
-  border: 1px solid #bdbf28;
+  border: 3px solid #bdbf28;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#woodTrans {
+  font-size: 1.25rem;
+  height:100%;
+  width:100%;
+  background-color: #e8c974;
+  color: black;
+  border: 3px solid #7d5e09;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#smelteryTrans {
+  font-size: 1.25rem;
+  height:100%;
+  width:100%;
+  background-color: #000000;
+  color: #585f7a;
+  border: 3px solid #505050;
   margin-left: 20px;
   margin-top: 2px;
   text-align: center;
@@ -192,7 +214,17 @@ h1 {
   font-size: 1.25rem;
   background-color: #e8c974;
   color: black;
-  border: 1px solid #7d5e09;
+  border: 2px solid #7d5e09;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#p2wCreate-main {
+  font-size: 1.25rem;
+  background-color: #e8c974;
+  color: black;
+  border: 2px solid #7d5e09;
   margin-left: 20px;
   margin-top: 2px;
   text-align: center;
@@ -202,10 +234,91 @@ h1 {
   font-size: 1.25rem;
   background-color: #b5b5b5;
   color: black;
-  border: 1px solid #707070;
+  border: 2px solid #707070;
   margin-left: 20px;
   margin-top: 2px;
   text-align: center;
+}
+
+#p2sCreate-main {
+  font-size: 1.25rem;
+  background-color: #b5b5b5;
+  color: black;
+  border: 2px solid #707070;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#w2cCreate {
+  font-size: 1.25rem;
+  background-color: #404040;
+  color: #dedede;
+  border: 2px solid #000000;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#w2cCreate-main {
+  font-size: 1.25rem;
+  background-color: #404040;
+  color: #dedede;
+  border: 2px solid #000000;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#c2fCreate {
+  font-size: 1.25rem;
+  background-color: #e34a0c;
+  color: #dedede;
+  border: 2px solid #fa9c24;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#c2fCreate-main {
+  font-size: 1.25rem;
+  background-color: #e34a0c;
+  color: #dedede;
+  border: 2px solid #fa9c24;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#o2mCreate {
+  font-size: 1.25rem;
+  background-color: #cdcdcd;
+  color: #585f7a;
+  border: 2px solid #b1b1b1;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#o2mCreate-main {
+  font-size: 1.25rem;
+  background-color: #cdcdcd;
+  color: #585f7a;
+  border: 2px solid #b1b1b1;
+  margin-left: 20px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+#p2wProgress {
+  width: 100%;
+  background-color: grey;
+}
+
+#p2wBar {
+  width: 1%;
+  height: 30px;
+  background-color: green;
 }
 
 .nav h1 {

@@ -16,32 +16,38 @@
       <h1 class="col-sm-8"/>
     </div>
   </header>
-  <!-- management tab links -->
-  <div class="tab">
-    <button class="managetablinks" onclick="openManageTab(event, 'population')">population</button>
-    <button class="managetablinks" onclick="openManageTab(event, 'basicResources')">resources</button>
-  </div>
-  <!-- management tab contents -->
-  <div id="population" class="managetabcontent" hidden>
-    <div class="tooltip-wrap">
-      <h5 class="col-sm-1" id="cultists" hidden></h5>
-      <div class="tooltip-content">
-          <p class="col-sm-6" id="cultistInfo">each cultist produces 0.5 praise per second, and can do cool things in the future</p>
-      </div>
-    </div>
-  </div>
-  <div id="basicResources" class="managetabcontent" hidden>
-    <h5 class="col-sm-2" id="praise"></h5>
-    <h5 class="col-sm-2" id="wood"></h5>
-    <h5 class="col-sm-2" id="stone" hidden></h5>
-  </div>
   <!-- main game section -->
   <section class="jumbotron">
+    <div class="tab">
+      <!-- management tab links -->
+      <button class="managetablinks" onclick="openManageTab(event, 'population')" id="populationTab" hidden>population</button>
+      <button class="managetablinks" onclick="openManageTab(event, 'basicResources')">resources</button>
+    </div>
+    <!-- management tab contents -->
+    <div id="population" class="managetabcontent" hidden>
+      <div class="tooltip-wrap">
+        <h5 class="col-sm-1" id="cultists"></h5>
+        <div class="tooltip-content">
+            <p class="col-sm-6" id="cultistInfo">each cultist produces 0.5 praise per second, and can do cool things in the future</p>
+        </div>
+      </div>
+    </div>
+    <div id="basicResources" class="managetabcontent" hidden>
+      <div class="row">
+        <h5 class="col-sm-2" id="praise"></h5>
+        <h5 class="col-sm-2" id="wood"></h5>
+        <h5 class="col-sm-2" id="stone" hidden></h5>
+        <h5 class="col-sm-2" id="ore" hidden></h5>
+      </div>
+      <div class="row">
+        <h5 class="col-sm-2" id="charcoal" hidden></h5>
+      </div>
+    </div>
     <!-- game tab links -->
     <div class="tab">
       <button class="gametablinks" onclick="openGameTab(event, 'buildings')">buildings</button>
       <button class="gametablinks" onclick="openGameTab(event, 'transmutation')" id="transTab" hidden>transmutation</button>
-      <button class="gametablinks" onclick="openGameTab(event, 'settings')">settings</button>
+      <button class="gametablinks" onclick="openGameTab(event, 'settings')">stats and settings</button>
       <button class="gametablinks" onclick="openGameTab(event, 'changelog')">changelog</button>
     </div>
     <!-- buildings tab -->
@@ -107,40 +113,82 @@
     <!-- transmutation tab -->
     <div id="transmutation" class="gametabcontent" hidden>
       <div class="tab">
-        <button class="transtablinks" onclick="openTransTab(event, 'praiseCreate')" id="praiseTrans"></button>
-      </div>
-      <div id="praiseCreate" class="transtabcontent" hidden>
-        <div class="row">
-          <button onclick="transmutation('praise','woodx1',1)" id="p2wCreate" class="col-sm-3">wood<br>1:1 transmutation</h5>
-          <button onclick="transmutation('praise','woodx10',10)" id="p2wCreate" class="col-sm-1">wood x10</h5>
-          <button onclick="transmutation('praise','woodx100',100)" id="p2wCreate" class="col-sm-1">wood x100</h5>
-          <button onclick="transmutation('praise','woodMAX',praise)" id="p2wCreate" class="col-sm-1">wood MAX</h5>
+        <div class="col-sm-2">
+          <button class="transtablinks" onclick="openTransTab(event, 'praiseCreate')" id="praiseTrans"></button>
         </div>
-        <div class="row">
-          <button onclick="transmutation('praise','stonex1',3)" id="p2sCreate" class="col-sm-3">stone<br>3:1 transmutation</h5>
-          <button onclick="transmutation('praise','stonex10',30)" id="p2sCreate" class="col-sm-1">stone x10</h5>
-          <button onclick="transmutation('praise','stonex100',300)" id="p2sCreate" class="col-sm-1">stone x100</h5>
-          <button onclick="transmutation('praise','stoneMAX',praise)" id="p2sCreate" class="col-sm-1">stone MAX</h5>
+        <div class="col-sm-2">
+          <button class="transtablinks" onclick="openTransTab(event, 'woodCreate')" id="woodTrans" hidden></button>
+        </div>
+        <div class="col-sm-2">
+          <button class="transtablinks" onclick="openTransTab(event, 'smeltery')" id="smelteryTrans" hidden>smeltery</button>
+        </div>
+      </div>
+      <div class="row">
+        <!-- praise to other stuff -->
+        <div id="praiseCreate" class="transtabcontent" hidden>
+          <div class="row">
+            <button onclick="transmutation('praise','p2wx1',1)" id="p2wCreate-main" class="col-sm-3">wood<br>1:1 transmutation</h5>
+            <button onclick="transmutation('praise','p2wx10',10)" id="p2wCreate" class="col-sm-1">wood<br>x10</h5>
+            <button onclick="transmutation('praise','p2wx100',100)" id="p2wCreate" class="col-sm-1">wood<br>x100</h5>
+            <button onclick="transmutation('praise','p2wMAX',praise)" id="p2wCreate" class="col-sm-1">wood<br>MAX</h5>
+          </div>
+          <div class="row">
+            <button onclick="transmutation('praise','p2sx1',3)" id="p2sCreate-main" class="col-sm-3">stone<br>3:1 transmutation<br>20% chance of ore instead</h5>
+            <button onclick="transmutation('praise','p2sx10',30)" id="p2sCreate" class="col-sm-1">stone<br>x10</h5>
+            <button onclick="transmutation('praise','p2sx100',300)" id="p2sCreate" class="col-sm-1">stone<br>x100</h5>
+            <button onclick="transmutation('praise','p2sMAX',praise)" id="p2sCreate" class="col-sm-1">stone<br>MAX</h5>
+          </div>
+        </div>
+        <!-- wood to other stuff -->
+        <div id="woodCreate" class="transtabcontent" hidden>
+          <div class="row">
+            <button onclick="transmutation('wood','w2cx1',1)" id="w2cCreate-main" class="col-sm-3"></h5>
+            <button onclick="transmutation('wood','w2cx10',10)" id="w2cCreate" class="col-sm-1">charcoal<br>x10</h5>
+            <button onclick="transmutation('wood','w2cx100',100)" id="w2cCreate" class="col-sm-1">charcoal<br>x100</h5>
+            <button onclick="transmutation('wood','w2cMAX',praise)" id="w2cCreate" class="col-sm-1">charcoal<br>MAX</h5>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- smeltery -->
+        <div id="smeltery" class="transtabcontent" hidden>
+          <div class="row">
+            <button onclick="lightFurnace(1)" id="c2fCreate-main" class="col-sm-3">stoke the flames<br>1 charcoal:1 charge</h5>
+            <button onclick="lightFurnace(10)" id="c2fCreate" class="col-sm-1">stoke<br>x10</h5>
+            <button onclick="lightFurnace(100)" id="c2fCreate" class="col-sm-1">stoke<br>x100</h5>
+            <button onclick="lightFurnace(charcoal)" id="c2fCreate" class="col-sm-1">stoke<br>MAX</h5>
+          </div>
+          <div class="row">
+            <button onclick="transmutation('ore','o2mx1',1)" id="o2mCreate-main" class="col-sm-3">metal<br>1:1 transmutation<br>50% chance of bad ore</h5>
+            <button onclick="transmutation('ore','o2mx10',10)" id="o2mCreate" class="col-sm-1">metal<br>x10</h5>
+            <button onclick="transmutation('ore','o2mx100',100)" id="o2mCreate" class="col-sm-1">metal<br>x100</h5>
+            <button onclick="transmutation('ore','o2mMAX',ore)" id="o2mCreate" class="col-sm-1">metal<br>MAX</h5>
+          </div>
         </div>
       </div>
     </div>
     <!-- settings tab -->
     <div id="settings" class="gametabcontent" hidden>
-      <div class="row">
-        <h5 class="col-sm-4">i have no settings for now</h5>
-      </div>
+      <h4><b>stats:</b></h4>
+      <h5 id="displayTotalPraise"></h5>
     </div>
     <!-- changelog tab -->
     <div id="changelog" class="gametabcontent" hidden>
       <div class="row">
-        <h4 class="col-sm-6" id="changelog">
-          version 0.1:
+        <h4 class="col-sm-12" id="changelog">
+          version 0.1.1 (feb 20, 2020):
+          <ul>
+            <li>continuing to work on site framework to make coding more efficient</li>
+            <li>expanded transmutation to include wood, stone, ore, and charcoal</li>
+            <li>added functionality to furnaces</li>
+          </ul>
+          version 0.1 (feb 16, 2020):
           <ul>
             <li>made the website framework (very not final)</li>
             <li>made basic incremental functions such as praise</li>
             <li>created temples and furnaces (no function on the latter yet)</li>
             <li>created transmutation</li>
-            <li>working on: more transmutation/buildings/tabs, progression, brainstorming</li>
+          </ul>
         </h4>
       </div>
     </div>
